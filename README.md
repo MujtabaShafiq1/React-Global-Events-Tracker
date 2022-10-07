@@ -6,6 +6,10 @@ Modified project of traversy media
 
 - React 
 
+## env
+
+REACT_APP_APIKEY in Map.js (your own google api key)
+
 # Screenshots
 
 ## Map
