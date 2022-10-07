@@ -1,8 +1,52 @@
-import React, { useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
+import { Table, TableBody, TableContainer, TableHead, TableRow, TableCell, Typography } from '@material-ui/core';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { Table, TableBody, TableContainer, TableHead, TableRow, TableCell } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Pagination from "@material-ui/lab/Pagination";
+
+const useStyles = makeStyles({
+    row: {
+        backgroundColor: "#16171a",
+        cursor: "pointer",
+        "&:hover": {
+            backgroundColor: "#131111"
+        },
+        fontFamily: "Montserrat",
+    },
+    pagination: {
+        "& .MuiPaginationItem-root": {
+            color: "red",
+        },
+    },
+});
+
+const StyledTableCell = withStyles((theme) => ({
+    head: {
+        backgroundColor: theme.palette.error.light,
+        color: theme.palette.common.white,
+    },
+    body: {
+        fontSize: 14,
+    },
+}))(TableCell);
+
+const StyledTableRow = withStyles((theme) => ({
+    root: {
+        '&:nth-of-type(odd)': {
+            backgroundColor: theme.palette.common.white,
+        },
+        '&:nth-of-type(EVENT)': {
+            backgroundColor: theme.palette.common.white,
+        },
+        "&:hover": {
+            backgroundColor: "#d3d3d3",
+            cursor: "pointer"
+        },
+        '&:last-child td, &:last-child th': {
+            border: 0,
+        },
+    },
+}))(TableRow);
 
 const EventTable = ({ events, addSingleEvent }) => {
 
@@ -11,51 +55,6 @@ const EventTable = ({ events, addSingleEvent }) => {
     useEffect(() => {
         setPage(1)
     }, [events])
-
-
-    const useStyles = makeStyles({
-        row: {
-            backgroundColor: "#16171a",
-            cursor: "pointer",
-            "&:hover": {
-                backgroundColor: "#131111"
-            },
-            fontFamily: "Montserrat",
-        },
-        pagination: {
-            "& .MuiPaginationItem-root": {
-                color: "red",
-            },
-        },
-    });
-
-    const StyledTableCell = withStyles((theme) => ({
-        head: {
-            backgroundColor: theme.palette.error.light,
-            color: theme.palette.common.white,
-        },
-        body: {
-            fontSize: 14,
-        },
-    }))(TableCell);
-
-    const StyledTableRow = withStyles((theme) => ({
-        root: {
-            '&:nth-of-type(odd)': {
-                backgroundColor: theme.palette.common.white,
-            },
-            '&:nth-of-type(EVENT)': {
-                backgroundColor: theme.palette.common.white,
-            },
-            "&:hover": {
-                backgroundColor: "#d3d3d3",
-                cursor: "pointer"
-            },
-            '&:last-child td, &:last-child th': {
-                border: 0,
-            },
-        },
-    }))(TableRow);
 
     const classes = useStyles();
 
@@ -103,7 +102,7 @@ const EventTable = ({ events, addSingleEvent }) => {
                         </TableBody>
                     </Table>
                     :
-                    <h1>Data not found</h1>
+                    <Typography variant="h6">Data not found</Typography>
                 }
             </TableContainer >
 
@@ -116,10 +115,7 @@ const EventTable = ({ events, addSingleEvent }) => {
                     justifyContent: "center",
                 }}
                 classes={{ ul: classes.pagination }}
-                onChange={(_, value) => {
-                    setPage(value);
-                    window.scroll(0, 450);
-                }}
+                onChange={(_, value) => setPage(value)}
             />
         </>
     )

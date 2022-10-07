@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import GoogleMapReact from 'google-map-react'
-import LocationInfoBox from './LocationInfoBox'
-import LocationMarker from './LocationMarker'
+import LocationInfoBox from '../Location/LocationInfoBox'
+import LocationMarker from '../Location/LocationMarker'
 
 import classes from './Map.module.css'
-import dark from './mapStyles'
+import dark from './CustomMap'
+import { Box } from '@material-ui/core';
 
-const Map = ({ eventData, center, zoom, singleEvent}) => {
+
+const Map = ({ eventData, center, zoom, singleEvent }) => {
 
     const [locationInfo, setLocationInfo] = useState(null)
     const markers = eventData.map(ev => {
@@ -20,21 +22,21 @@ const Map = ({ eventData, center, zoom, singleEvent}) => {
     })
 
     return (
-        <div className={classes.map}>
+        <Box className={classes.map}>
             <GoogleMapReact
                 bootstrapURLKeys={{ key: process.env.REACT_APP_APIKEY }}
                 center={singleEvent ? {
                     lat: singleEvent.geometries[0].coordinates[1],
                     lng: singleEvent.geometries[0].coordinates[0]
-                    
-                } :center}
-                zoom={singleEvent ? 10 : zoom}
+
+                } : center}
+                zoom={singleEvent ? 9 : zoom}
                 options={{ styles: dark }}
             >
                 {markers}
             </GoogleMapReact>
             {locationInfo && <LocationInfoBox info={locationInfo} />}
-        </div>
+        </Box>
     )
 }
 

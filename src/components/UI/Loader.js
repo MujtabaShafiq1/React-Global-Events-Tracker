@@ -1,14 +1,12 @@
-import React from 'react'
 import spinner from '../../assets/spinner.gif'
-
 import classes from './Loader.module.css'
+import { Box } from '@material-ui/core';
 
 const Loader = () => {
   return (
-    <div className={classes.loader}>
-        <img src={spinner} alt='Loading' />
-        <h1>Fetching Data</h1>
-    </div>
+    <Box className={classes.loader}>
+      <Box component="img" src={spinner} alt='Loading' />
+    </Box>
   )
 }
 
