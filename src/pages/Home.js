@@ -6,7 +6,7 @@ import EventTable from '../components/Table/EventTable';
 const Home = ({ eventData }) => {
 
     const ref = useRef(null);
-    const [textSearch, setTextSearch] = useState('')
+    const [search, setSearch] = useState(null)
     const [singleEvent, setSingleEvent] = useState(null);
     const [filteredEvents, setFilteredEvents] = useState(eventData)
 
@@ -17,12 +17,15 @@ const Home = ({ eventData }) => {
 
     function typeChangeHandler(value) {
 
+        setSearch(null)
+        setSingleEvent(null)
+
         if (!value || value === "All") return setFilteredEvents(eventData)
         const filteredData = eventData.filter((ev) => {
             return ev.categories[0].id === +value
         })
         setFilteredEvents(filteredData);
-        setSingleEvent(null)
+
     }
 
 
@@ -30,25 +33,32 @@ const Home = ({ eventData }) => {
         return { id: id, title: eventData.find(e => e.categories[0].id === id).categories[0].title }
     });
 
-    const data = filteredEvents.filter(event => {
-        return event.title.toLowerCase().includes(textSearch.toLowerCase()) || event.id.toLowerCase().includes(textSearch.toLowerCase())
-    })
+    const searchHandler = (e) => {
+
+        if (e.target.value.length <= 0) return setSearch(null)
+
+        const data = filteredEvents.filter(event => {
+            return event.title.toLowerCase().includes(e.target.value.toLowerCase()) || event.id.toLowerCase().includes(e.target.value.toLowerCase())
+        })
+        setSearch(data)
+    }
+
 
 
     return (
         <Box style={{ backgroundColor: "#FAF9F6", height: '100%', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
             <Box ref={ref}>
-                <Map eventData={data} singleEvent={singleEvent} />
+                <Map eventData={search || filteredEvents} singleEvent={singleEvent} />
             </Box>
             <Container width="sm" align="center" style={{ padding: "30px 0" }}>
                 <Box style={{ display: "flex", justifyContent: "center", flex: 1 }}>
-                    <TextField label="Search" variant="standard" onChange={(e) => setTextSearch(e.target.value)} style={{ flex: "0 0 25em", marginRight: "100px" }} />
+                    <TextField label="Search" variant="standard" onChange={searchHandler} style={{ flex: "0 0 25em", marginRight: "100px" }} />
                     <NativeSelect onChange={(e) => typeChangeHandler(e.target.value)} style={{ flex: "0 0 10em" }}>
                         <option>All</option>
                         {uniqueEvents.map((ev) => <option value={ev.id} key={ev.id}>{ev.title}</option>)}
                     </NativeSelect>
                 </Box>
-                <EventTable events={filteredEvents} addSingleEvent={addSingleEvent} />
+                <EventTable events={search || filteredEvents} addSingleEvent={addSingleEvent} />
             </Container>
         </Box>
     )

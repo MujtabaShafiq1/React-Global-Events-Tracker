@@ -102,7 +102,7 @@ const EventTable = ({ events, addSingleEvent }) => {
                         </TableBody>
                     </Table>
                     :
-                    <Typography variant="h6">Data not found</Typography>
+                    <Typography variant="h4">Data not found</Typography>
                 }
             </TableContainer >
 
